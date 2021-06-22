@@ -1,132 +1,93 @@
 <template>
-    <div>
-        <h1>Login</h1>
-        <small>{{uid}}</small>
-        <br>
-        <small>{{phone}}</small>
-        <br><br>
-        <form @submit.prevent="submit">
-            <div>
-                <label for="phonenumber" style="font:family:system-ui;font-size: x-large;">Phone Number</label>
-            </div>
-            <div>
-                <input type="tel"
-                    id="phonenumber"                    
-                    maxlength="13"
-                    required
-                    v-model="phoneNumber"
-                    style="text-align:center;maxwidth:300px;width:300px;height:40px"
-                    placeholder="+91 NUMBER"
-                    title="Enter Phone number with the code"
-                >
-            </div>
-            <br>
-            <div id="recaptcha-container" style="background-color:#1b1a1a;width:300px;margin:auto;">
-            </div>
-            <br>
-            <div>
-                <button class="btn btn-primary" id="log-in" type="submit">Login</button>
-            </div>
-        </form>
-        <br><br>        
-
-        <br><br>
-        <div v-if="smsSent" style="background-color:#1b1a1a;width:300px;height:180px;margin:auto; border-radius:10px;">
-            <div style="background-color:black">
-            <label style="font:family:system-ui;font-size: x-large;">Enter Otp</label>
-            </div>
-            <br>
-            <div>
-                <input type="text" 
-                id="otpField"
-                style="text-align:center;"
-                pattern="[0-9]{6}"
-                maxlength="6"
-                v-model="otpnum"
-                placeholder="Enter OTP"
-                required>
-            </div>
-            <br>
-            <div>
-                <button class="btn btn-primary" @click="verifyCode" id="otp-btn">Confirm</button>
-            </div>
-        </div>
-    </div>    
+  <div id="nav">
+    <button v-if="loginBtn" @click="login">login</button>
+    <div class="d-flex align-items-center">
+      <img class="avatar" v-if="avatar" :src="avatar" alt="avatar">
+      <p class="name" v-if="name">{{name}}</p>
+    </div>
+  </div>
 </template>
 
 <script>
-import firebase from 'firebase'
+import fb from "firebase"
 import "../../firebase"
 import "firebase/auth"
+import { db } from '../../firebase'
 export default {
-    name:"login",
-    data() {
-      return {
-        phoneNumber:null, 
-        confirmationResult:null,
-        otpnum:null,
-        recaptchaVerifier:null,
-        recaptchaWidgetId:null,
-        confirmResult:null,
-        smsSent:false,
-        uid: '',
-        phone: '',
-      }
-    },
-    async mounted() {
-        firebase.auth().useDeviceLanguage()
-        this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('log-in',{
-            'size':'invisible',
-            'callback':(response) => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
-            console.log(response)
-            }
-        })            
+  name: 'ProfileBanner',
+  data() {
+    return {
+      name: '',
+      avatar: '',
+      loginBtn: true
+    }
+  },
+  methods: {
+    async login() {
 
-        firebase.auth().onAuthStateChanged(user => {
-          this.uid = user.uid
-          this.phone = user
+      let provider = new fb.auth.FacebookAuthProvider();      
+      let res = await fb.auth().signInWithPopup(provider)
+
+      let id = res.additionalUserInfo.profile.id
+      let name = res.additionalUserInfo.profile.name
+      let avatar = res.additionalUserInfo.profile.picture.data.url
+
+      await this.$store.dispatch('saveUser', {id, name, avatar})
+
+      db.collection('users').doc(id).set({
+        id: id,
+        name: name,
+        avatar: avatar,
+      })
+
+      this.name = await this.$store.state.name
+      this.avatar = await this.$store.state.avatar
+      if (this.name) {
+        this.loginBtn = false
+      }
+    }
+  },
+  async mounted() {
+        fb.auth().onAuthStateChanged(user => {
+          this.name = user.displayName
         })
     },
-    methods:{
-        submit() {
-            this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container')
-            this.recaptchaVerifier.render().then((widgetId)=>{
-            this.recaptchaWidgetId = widgetId    
-            })
-            
-            var number = this.phoneNumber            
-            firebase.auth().signInWithPhoneNumber(number,this.recaptchaVerifier)
-            .then((confirmationResult)=>{                
-                this.confirmResult = confirmationResult
-                console.log(this.confirmResult)
-                alert("Sms Sent!")
-                this.smsSent=true
-            })
-            .catch((error)=>{
-                console.log("Sms not sent",error.message)
-            })
-        },
-        verifyCode()
-        {            
-            this.confirmResult.confirm(this.otpnum)
-            .then((result)=>{
-                alert("Registeration Successfull!",result)
-                this.gotonext()
-                var user = result.user
-                this.phone = result.user
-                console.log(user)                
-            })
-            .catch((error)=>{
-                console.log(error)
-            })
-        },
-        gotonext()
-        {
-            this.$router.replace({name:"dashboard"})
-        }
-    },    
-
 }
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+h3 {
+  margin: 40px 0 0;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+
+#nav {
+  width: 100%;
+  padding: 15px;
+  display: flex;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 9999px;
+  margin-right: 16px;
+}
+
+.name {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+</style>
