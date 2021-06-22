@@ -1,6 +1,8 @@
 <template>
     <div>
         <h1>Login</h1>
+        <small>{{uid}}</small>
+        <br>
         <small>{{phone}}</small>
         <br><br>
         <form @submit.prevent="submit">
@@ -67,7 +69,8 @@ export default {
         recaptchaWidgetId:null,
         confirmResult:null,
         smsSent:false,
-        phone: ''
+        uid: '',
+        phone: '',
       }
     },
     async mounted() {
@@ -80,14 +83,13 @@ export default {
             }
         })            
 
-        let res = await firebase.auth().onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
+          this.uid = user.uid
           this.phone = user
         })
-        this.phone = res
     },
     methods:{
-        submit()
-        {
+        submit() {
             this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container')
             this.recaptchaVerifier.render().then((widgetId)=>{
             this.recaptchaWidgetId = widgetId    
