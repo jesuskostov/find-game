@@ -22,6 +22,7 @@ export default {
         flex-wrap: nowrap;
         margin-top: 30px;
         padding-left: 15px;
+        padding-right: 15px;
         padding-bottom: 30px;
         gap: 12px;
         overflow-x: scroll;

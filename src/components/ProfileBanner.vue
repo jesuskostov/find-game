@@ -3,7 +3,7 @@
     <button v-if="!loginBtn" @click="login">login</button>
     <div class="w-100 d-flex align-items-center gap-35">
       <div class="profile-picture mr-auto">
-        <img class="avatar" src="../assets/download.jpeg" alt="avatar">
+        <img class="avatar" v-if="avatar" :src="avatar" alt="avatar">
       </div>
       <div class="d-flex flex-column align-items-center justify-content-center">
         <div class="create-btn mb-2">
@@ -23,8 +23,7 @@
       </div>
     </div>
     <div class="d-flex justify-content-start">
-      <!-- <p class="name" v-if="name">{{name}}</p> -->
-      <p class="name">Иван Михайлов</p>
+      <p class="name" v-if="name">{{name}}</p>
     </div>
   </div>
 </template>
@@ -34,6 +33,7 @@ import fb from "firebase"
 import "../../firebase"
 import "firebase/auth"
 import { db } from '../../firebase'
+
 export default {
   name: 'ProfileBanner',
   data() {
@@ -49,7 +49,7 @@ export default {
       let provider = new fb.auth.FacebookAuthProvider();      
       let res = await fb.auth().signInWithPopup(provider)
 
-      let id = res.additionalUserInfo.profile.id
+      let id = res.user.uid
       let name = res.additionalUserInfo.profile.name
       let avatar = res.additionalUserInfo.profile.picture.data.url
 
@@ -69,10 +69,21 @@ export default {
     }
   },
   async mounted() {
-        fb.auth().onAuthStateChanged(user => {
-          this.name = user.displayName
-        })
-    },
+    fb.auth().onAuthStateChanged( async (user) => {
+      let id = await user.uid
+      let res = await db.collection('users').doc(id).get()
+      let data = res.data()
+
+      if (res.exists) {
+        this.name = data.name
+        this.avatar = data.avatar
+      } else {
+        this.login = true
+      }
+      
+
+    })
+  },
 }
 </script>
 

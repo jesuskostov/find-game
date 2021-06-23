@@ -1,17 +1,13 @@
 <template>
   <div id="app">
-    <ProfileBanner />
     <router-view/>
   </div>
 </template>
 
 <script>
-import ProfileBanner from './components/ProfileBanner.vue'
 
 export default {
-  components: {
-    ProfileBanner
-  },
+  
  
 }
 </script>
