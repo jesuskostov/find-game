@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
-    <button v-if="!loginBtn" @click="login">login</button>
-    <div class="w-100 d-flex align-items-center gap-35">
+    <button v-if="loginBtn" @click="login">login</button>
+    <div v-if="!loginBtn" class="w-100 d-flex align-items-center gap-35">
       <div class="profile-picture mr-auto">
         <img class="avatar" v-if="avatar" :src="avatar" alt="avatar">
       </div>
@@ -22,7 +22,7 @@
         <small>Настройки</small>
       </div>
     </div>
-    <div class="d-flex justify-content-start">
+    <div v-if="!loginBtn" class="d-flex justify-content-start">
       <p class="name" v-if="name">{{name}}</p>
     </div>
   </div>
@@ -40,7 +40,7 @@ export default {
     return {
       name: '',
       avatar: '',
-      loginBtn: true
+      loginBtn: false
     }
   },
   methods: {
@@ -70,18 +70,20 @@ export default {
   },
   async mounted() {
     fb.auth().onAuthStateChanged( async (user) => {
-      let id = await user.uid
-      let res = await db.collection('users').doc(id).get()
-      let data = res.data()
+      if (user) {
+        let id = await user.uid
+        let res = await db.collection('users').doc(id).get()
+        let data = res.data()
 
-      if (res.exists) {
-        this.name = data.name
-        this.avatar = data.avatar
+        if (res.exists) {
+          this.name = data.name
+          this.avatar = data.avatar
+        } else {
+          this.login = true
+        }
       } else {
         this.login = true
       }
-      
-
     })
   },
 }
