@@ -70,7 +70,7 @@ export default {
   },
   async mounted() {
     fb.auth().onAuthStateChanged( async (user) => {
-      if (user) {
+      if (user.uid) {
         let id = await user.uid
         let res = await db.collection('users').doc(id).get()
         let data = res.data()
