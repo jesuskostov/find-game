@@ -71,20 +71,20 @@ export default {
   async mounted() {
     fb.auth().onAuthStateChanged( async (user) => {
       console.log(user);
-      // if (user.uid) {
-      //   let id = await user.uid
-      //   let res = await db.collection('users').doc(id).get()
-      //   let data = res.data()
+      if (user.uid != null) {
+        let id = await user.uid
+        let res = await db.collection('users').doc(id).get()
+        let data = res.data()
 
-      //   if (res.exists) {
-      //     this.name = data.name
-      //     this.avatar = data.avatar
-      //   } else {
-      //     this.login = true
-      //   }
-      // } else {
-      //   this.login = true
-      // }
+        if (res.exists) {
+          this.name = data.name
+          this.avatar = data.avatar
+        } else {
+          this.login = true
+        }
+      } else {
+        this.login = true
+      }
     })
   },
 }
