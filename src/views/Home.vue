@@ -47,11 +47,11 @@ export default {
     const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
     if (isIos() && !isInStandaloneMode()) {
-      // this.install = true
+      this.install = true
     } 
 
     // fb.auth().onAuthStateChanged(user => {
-    //   let uid = user.uid
+      // let uid = user.uid
     //   console.log(uid);
     // })
 
