@@ -25,6 +25,24 @@
       </p>
       <span></span>
     </div>
+    <div v-for="(event, i) in events" :key="i">
+      <div class="box mx-auto">
+        <div class="user">
+          <img :src="event.avatar" alt="avatar">
+          <h4>{{event.admin}}</h4>
+        </div>
+        <h2>{{event.title}}</h2>
+        <p>{{event.place}}</p>
+        <p class="mb-0 b">Участващи</p>
+        <div class="d-flex justify-content-between">
+          <p class="mb-0">{{event.players.length}}</p>
+          <p class="mb-0">{{event.capacity}}</p>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" :style="{'width': event.players.length * 100 / event.capacity + '%'}"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,6 +67,11 @@ export default {
     ProfileBanner,
     Category
   },
+  computed: {
+    events() {
+      return this.$store.state.allEvents
+    }
+  },
   mounted() {
     
     const isIos = () => {
@@ -65,6 +88,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.b {
+  font-weight: bold;
+}
+
+.box {
+  text-align: left;
+  width: 90%;
+  box-shadow: 0 2px 19px 1px rgb(0 0 0 / 10%);
+  border-radius: 11px;
+  padding: 10px 15px;
+  margin-bottom: 30px;
+  h2 {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  p {
+    font-size: 12px;
+  }
+  .user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    h4 {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      margin-right: 8px;
+    }
+  }
+  .progress {
+    height: 0.6rem;
+    .progress-bar {
+      background: rgb(25,198,55);
+      background: linear-gradient(45deg, rgba(25,198,55,1) 0%, rgba(211,237,39,1) 100%);
+    }
+  }
+}
 
 .close {
   width: 16px;
