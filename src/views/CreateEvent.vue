@@ -28,6 +28,10 @@ export default {
         'players': []
     }
 
+    if (data.events == null) {
+      data.events = []
+    }
+
     let events = [...data.events, newEvents]
 
     let update = {

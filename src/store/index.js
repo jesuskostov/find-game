@@ -9,8 +9,8 @@ export default new Vuex.Store({
     id: '',
     name: '',
     avatar: '',
-    events: null,
-    allEvents: null
+    events: [],
+    allEvents: []
   },
   mutations: {
     SET_USER: (state, {id, name, avatar, events}) => {

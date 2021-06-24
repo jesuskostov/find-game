@@ -59,7 +59,7 @@ export default {
         id: id,
         name: name,
         avatar: avatar,
-        events: null
+        events: []
       })
 
       this.name = await this.$store.state.name
