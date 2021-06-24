@@ -7,18 +7,20 @@ export default new Vuex.Store({
   state: {
     id: '',
     name: '',
-    avatar: ''
+    avatar: '',
+    events: null
   },
   mutations: {
-    SET_USER: (state, {id, name, avatar}) => {
+    SET_USER: (state, {id, name, avatar, events}) => {
       state.id = id
       state.name = name
       state.avatar = avatar
+      state.events = events
     }
   },
   actions: {
-    saveUser: ({commit}, {id, name, avatar}) => {
-      commit('SET_USER', {id, name, avatar})
+    saveUser: ({commit}, {id, name, avatar, events}) => {
+      commit('SET_USER', {id, name, avatar, events})
     }
   },
   modules: {

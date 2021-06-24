@@ -59,6 +59,7 @@ export default {
         id: id,
         name: name,
         avatar: avatar,
+        events: null
       })
 
       this.name = await this.$store.state.name
@@ -70,15 +71,18 @@ export default {
   },
   async mounted() {
     fb.auth().onAuthStateChanged( async (user) => {
-      console.log(user);
       if (user !== null) {
-        let id = await user.uid
+        let id = user.uid
         let res = await db.collection('users').doc(id).get()
         let data = res.data()
 
         if (res.exists) {
           this.name = data.name
           this.avatar = data.avatar
+          let events = data.events
+          let name = this.name
+          let avatar = this.avatar
+          this.$store.dispatch('saveUser', {id, name, avatar, events})
         } else {
           this.loginBtn = true
         }
@@ -219,7 +223,6 @@ a {
   -moz-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.2);
   box-shadow: 0px 5px 15px 0px rgb(0 0 0 / 20%);
   border-radius: 999px;
-  font-style: oblique;
   padding: 0px 35px;
   color: #fff;
 }
