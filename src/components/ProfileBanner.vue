@@ -246,6 +246,8 @@ a {
   background: rgb(25,198,55);
   position: relative;
   overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
   p {
     margin-bottom: 0;
     z-index: 4;
