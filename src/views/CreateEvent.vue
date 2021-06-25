@@ -16,16 +16,16 @@ export default {
     let data = await this.$store.state 
 
     let newEvents = {
-        'id': data.id,
-        'admin': data.name,
-        'avatar': data.avatar,
-        'title': 'Shte se razmajem',
-        'place': 'Stara Zagora, aqzmoto',
-        'capacity': 15,
-        'description': 'lorem na aqzmoto v stzto basi qkoto shte e',
-        'time': '10:88',
-        'type': 'running',
-        'players': []
+      'id': data.id,
+      'admin': data.name,
+      'avatar': data.avatar,
+      'title': 'Shte se razmajem',
+      'place': 'Stara Zagora, aqzmoto',
+      'capacity': 15,
+      'description': 'lorem na aqzmoto v stzto basi qkoto shte e',
+      'time': '10:88',
+      'type': 'running',
+      'players': []
     }
 
     if (data.events == null) {
@@ -35,10 +35,10 @@ export default {
     let events = [...data.events, newEvents]
 
     let update = {
-        'id': data.id,
-        'avatar': data.avatar,
-        'name': data.name,
-        events
+      'id': data.id,
+      'avatar': data.avatar,
+      'name': data.name,
+      events
     }
     db.collection("users").doc(data.id).update(update)
 
@@ -46,12 +46,12 @@ export default {
     let res = globalEvents.data()
 
     if (res.events.length == 0) {
-        let events = [newEvents]
-        db.collection("allEvents").doc('here').update({events})
+      let events = [newEvents]
+      db.collection("allEvents").doc('here').update({events})
     } else {
-        let events = res.events
-        events.push(newEvents)
-        db.collection("allEvents").doc('here').update({events})
+      let events = res.events
+      events.push(newEvents)
+      db.collection("allEvents").doc('here').update({events})
     }
     
   }
