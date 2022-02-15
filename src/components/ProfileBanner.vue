@@ -46,8 +46,8 @@ export default {
   name: 'ProfileBanner',
   data() {
     return {
-      name: 'Jesus K.',
-      avatar: 'https://scontent-sof1-1.xx.fbcdn.net/v/t1.6435-9/110318190_1582115025293742_2070869998384083592_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=x7WjINn-EvMAX_KA2CV&tn=rWMIazecdf23rxt3&_nc_ht=scontent-sof1-1.xx&oh=00_AT-TvoDLqdLlrpZn0ksd5h9h_Qx7K3J2vePwNMCQJM7vnQ&oe=62330780',
+      name: '',
+      avatar: '',
       loginBtn: false
     }
   },
@@ -96,7 +96,7 @@ export default {
           this.loginBtn = true
         }
       } else {
-        this.loginBtn = false
+        this.loginBtn = true
       }
     })
   },
