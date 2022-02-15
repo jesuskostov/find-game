@@ -1,10 +1,10 @@
 <template>
   <div class="category">
-    <button>Футбол</button>
-    <button>Баскетбол</button>
-    <button>Бадминтонът</button>
-    <button>Волейбол</button>
-    <button>Други</button>
+    <button>Football</button>
+    <button>Basketball</button>
+    <button>Badminton</button>
+    <button>Volleyball</button>
+    <button>Other</button>
   </div>
 </template>
 

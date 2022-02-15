@@ -4,17 +4,24 @@
         <button @click="$router.push('/')">
             <img src="../assets/back.svg" alt="">
         </button>
-        <h1>Нова игра</h1>
+        <h1 v-if="!allowToCreate" class="text-muted-custom">Create new game</h1>
+        <h1 v-else @click="create">Create new game</h1>
       </div>
-      <div class="form flex-grow-1 d-flex flex-column">
-        <input type="text" class="form-control" v-model="title" placeholder="Заглавие">
-        <input type="text" class="form-control" v-model="place" placeholder="Място">
-        <input type="number" class="form-control" v-model="capacity" placeholder="За колко играчи">
-        <input type="date" class="form-control" v-model="date" placeholder="Кога">
-        <input type="time" class="form-control" v-model="time" placeholder="Час">
-        <input type="text" class="form-control" v-model="type" placeholder="Вид игра">
-        <input type="text" class="form-control" v-model="description" placeholder="Описание">
-        <button @click="create" class="mt-auto mb-4">Създай</button>
+      <div class="form flex-grow-1 d-flex flex-column pt-4 pb-4">
+        <label for="title">Title</label>
+        <input type="text" id="title" class="form-control" v-model="info.title">
+        <label for="place">Place</label>
+        <input type="text" id="place" class="form-control" v-model="info.place">
+        <label for="capacity">How many players</label>
+        <input type="number" id="capacity" class="form-control" v-model="info.capacity">
+        <label for="date">Day</label>
+        <input type="date" id="date" class="form-control" v-model="info.date">
+        <label for="time">Time</label>
+        <input type="time" id="time" class="form-control" v-model="info.time">
+        <label for="type">Game category</label>
+        <input type="text" id="type" class="form-control" v-model="info.type">
+        <label for="description">Description</label>
+        <input type="text" id="description" class="form-control" v-model="info.description">
       </div>
   </div>
 </template>
@@ -26,13 +33,25 @@ export default {
   name: 'CreateEvent',
   data() {
     return {
-      title: '',
-      place: '',
-      capacity: null,
-      date: null,
-      time: null,
-      type: '',
-      description: '',
+      info: {
+        title: '',
+        place: '',
+        capacity: null,
+        date: null,
+        time: null,
+        type: '',
+        description: '',
+      },
+      allowToCreate: false
+    }
+  },
+  watch: {
+    info: {
+      handler() {
+        if (this.info.title && this.info.place && this.info.capacity && this.info.date && this.info.time && this.info.type && this.info.description) {
+          this.allowToCreate = true
+        }
+      }, deep: true
     }
   },
   methods: {
@@ -93,11 +112,23 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 
+.text-muted-custom {
+  opacity: 0.4;
+}
+
 .form {
   padding-top: 20px;
   padding-left: 15px;
   padding-right: 15px;
+  overflow: scroll;
+  label {
+    text-align: left;
+    margin-bottom: 0.2em;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
   input {
+    flex-shrink: 0;
     display: block;
     width: 100%;
     height: 50px;
@@ -107,6 +138,7 @@ export default {
     padding-left: 8px;
   }
   button {
+    flex-shrink: 0;
     height: 60px;
     border-radius: 12px;
     border: 0;

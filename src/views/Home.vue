@@ -14,15 +14,9 @@
           </g>
         </svg>
       </button>
-      <p>
-        От тук можете да запазите сайта като приложение на телефона ви:
-        <br>
-        <br>
-        <br>
-        1. Натиснете
-        <br>
-        2. Натиснете "Add To Home Screen"
-      </p>
+      <p class="mb-4">You can save this website like an app on your screen:</p>
+      <p class="mb-1">1. Press the icon below</p>
+      <p class="mb-0">2. Then press "Add To Home Screen"</p>
       <span></span>
     </div>
     <div v-for="(event, i) in events" :key="i">
@@ -275,39 +269,40 @@ export default {
   top: 5px;
   right: 25px;
   svg {
+    position: relative;
     fill: #fff;
+    z-index: 9999;
   }
 }
 
 .save-app {
+  position: fixed;
+  width: 95%;
+  height: 50%;
+  left: 50%;
+  bottom: 25px;
+  transform: translate(-50%, 0);
   text-align: left;
-    width: 95%;
-    position: fixed;
-    height: 50%;
-    background-color: red;
+  background-color: red;
+  border-radius: 26px;
+  padding: 50px 25px 10px 25px;
+  font-size: 18px;
+  color: #fff;
+  background: rgb(25,198,55);
+  background: linear-gradient(45deg, rgba(25,198,55,1) 0%, rgba(211,237,39,1) 100%);
+  box-shadow: 0 0 0 100vh rgb(0 0 0 / 70%);
+  z-index: 5;
+  span {
+    width: 30px;
+    height: 30px;
+    background-color: #4cd038;
+    display: block;
+    position: absolute;
+    bottom: -15px;
     left: 50%;
-    bottom: 25px;
-    transform: translate(-50%, 0);
-    border-radius: 26px;
-    padding: 2px 25px;
-    font-size: 18px;
-    color: #fff;
-    background: rgb(25,198,55);
-    background: linear-gradient(45deg, rgba(25,198,55,1) 0%, rgba(211,237,39,1) 100%);
-    box-shadow: 0 0 0 100vh rgb(0 0 0 / 70%);
-    padding-top: 30px;
-    z-index: 5;
-    span {
-      width: 30px;
-      height: 30px;
-      background-color: #4cd038;
-      display: block;
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      z-index: 1;
-      animation: move 0.4s alternate infinite;
-    }
+    z-index: 999;
+    animation: move 0.4s alternate infinite;
+  }
 }
 
 @keyframes move {
