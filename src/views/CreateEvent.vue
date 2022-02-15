@@ -7,13 +7,13 @@
         <h1>Нова игра</h1>
       </div>
       <div class="form flex-grow-1 d-flex flex-column">
-        <input type="text" v-model="title" placeholder="Заглавие">
-        <input type="text" v-model="place" placeholder="Място">
-        <input type="number" v-model="capacity" placeholder="За колко играчи">
-        <input type="date" v-model="date" placeholder="Кога">
-        <input type="time" v-model="time" placeholder="Час">
-        <input type="text" v-model="type" placeholder="Вид игра">
-        <input type="text" v-model="description" placeholder="Описание">
+        <input type="text" class="form-control" v-model="title" placeholder="Заглавие">
+        <input type="text" class="form-control" v-model="place" placeholder="Място">
+        <input type="number" class="form-control" v-model="capacity" placeholder="За колко играчи">
+        <input type="date" class="form-control" v-model="date" placeholder="Кога">
+        <input type="time" class="form-control" v-model="time" placeholder="Час">
+        <input type="text" class="form-control" v-model="type" placeholder="Вид игра">
+        <input type="text" class="form-control" v-model="description" placeholder="Описание">
         <button @click="create" class="mt-auto mb-4">Създай</button>
       </div>
   </div>
@@ -103,7 +103,7 @@ export default {
     height: 50px;
     margin-bottom: 15px;
     border-radius: 12px;
-    border: 1px solid gray;
+    border: 1px solid rgb(213, 213, 213);
     padding-left: 8px;
   }
   button {
