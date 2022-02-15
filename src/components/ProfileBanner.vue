@@ -56,26 +56,25 @@ export default {
 
       let provider = new fb.auth.FacebookAuthProvider();      
       let res = await fb.auth().signInWithPopup(provider)
-      console.log(res);
 
-      // let id = res.user.uid
-      // let name = res.additionalUserInfo.profile.name
-      // let avatar = res.additionalUserInfo.profile.picture.data.url
+      let id = res.user.uid
+      let name = res.additionalUserInfo.profile.name
+      let avatar = res.additionalUserInfo.profile.picture.data.url
 
-      // await this.$store.dispatch('saveUser', {id, name, avatar})
+      await this.$store.dispatch('saveUser', {id, name, avatar})
 
-      // db.collection('users').doc(id).set({
-      //   id: id,
-      //   name: name,
-      //   avatar: avatar,
-      //   events: []
-      // })
+      db.collection('users').doc(id).set({
+        id: id,
+        name: name,
+        avatar: avatar,
+        events: []
+      })
 
-      // this.name = await this.$store.state.name
-      // this.avatar = await this.$store.state.avatar
-      // if (this.name) {
-      //   this.loginBtn = false
-      // }
+      this.name = await this.$store.state.name
+      this.avatar = await this.$store.state.avatar
+      if (this.name) {
+        this.loginBtn = false
+      }
     }
   },
   async mounted() {
